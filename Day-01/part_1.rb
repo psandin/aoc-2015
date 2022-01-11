@@ -26,5 +26,11 @@ def slurp(path)
   input_str.split(/\n/)
 end
 
+def count_parens(line)
+  line.chars.map { |c| c == '(' ? 1 : -1 }.sum
+end
+
 raw_lines = slurp($args[:file])
-puts raw_lines.to_s
+raw_lines.each_with_index do |l, i|
+  puts "#{i}: #{count_parens(l)}"
+end

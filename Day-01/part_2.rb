@@ -26,5 +26,20 @@ def slurp(path)
   input_str.split(/\n/)
 end
 
+def parse_parens(line)
+  line.chars.map { |c| c == '(' ? 1 : -1 }
+end
+
+def find_first_basement(seq)
+  pos = 0
+  seq.each_with_index do |e, i|
+    pos += e
+    return i + 1 if pos.negative?
+  end
+  nil
+end
+
 raw_lines = slurp($args[:file])
-puts raw_lines.to_s
+raw_lines.each_with_index do |l, i|
+  puts "#{i + 1}: #{find_first_basement(parse_parens(l))}"
+end
