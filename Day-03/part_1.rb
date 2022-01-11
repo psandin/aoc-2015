@@ -26,5 +26,27 @@ def slurp(path)
   input_str.split(/\n/)
 end
 
+def walk(path)
+  current = [0, 0]
+  visited = { current => true }
+  path.chars.each do |c|
+    case c
+    when '>'
+      current[0] += 1
+    when '<'
+      current[0] -= 1
+    when 'v'
+      current[1] += 1
+    when '^'
+      current[1] -= 1
+    end
+    visited[current.clone] = true
+  end
+  puts visited.keys.map(&:to_s)
+  visited.keys.count
+end
+
 raw_lines = slurp($args[:file])
-puts raw_lines.to_s
+raw_lines.each_with_index do |e, i|
+  puts "#{i + 1}: #{walk(e)}"
+end
