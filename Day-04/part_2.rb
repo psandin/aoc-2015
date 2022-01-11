@@ -31,16 +31,16 @@ def mine(prefix, target_length)
   md5 = Digest::MD5.new
   hash_head = ''
   counter = 0
-  until hash_head == ''.rjust(target_length,'0')
+  until hash_head == ''.rjust(target_length, '0')
     md5.reset
     counter += 1
     md5 << prefix
     md5 << counter.to_s
-    hash_head = md5.hexdigest.slice(0,target_length)
+    hash_head = md5.hexdigest.slice(0, target_length)
     puts "#{counter} => #{hash_head}" if $args[:verbose]
   end
   counter
 end
 
 prefix = slurp($args[:file]).first
-puts mine(prefix,6)
+puts mine(prefix, 6)
