@@ -26,5 +26,18 @@ def slurp(path)
   input_str.split(/\n/)
 end
 
+def parse_inputs(lines)
+  lines.map { |l| l.split(/x/).map(&:to_i) }
+end
+
+def ribbon_needed(pkg)
+  (pkg.sort.slice(0, 2).sum * 2) + pkg.reduce(:*)
+end
+
 raw_lines = slurp($args[:file])
 puts raw_lines.to_s
+pkgs = parse_inputs(raw_lines)
+areas = pkgs.map { |p| ribbon_needed(p) }
+puts areas
+puts
+puts areas.sum
