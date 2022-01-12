@@ -26,5 +26,38 @@ def slurp(path)
   input_str.split(/\n/)
 end
 
+def parse_inputs(lines)
+  lines.map do |l|
+    %i[raw op xmin ymin xmax ymax].zip(l.match(/(.*) (\d+),(\d+) through (\d+),(\d+)/).to_a).to_h
+  end
+end
+
+def execute_instructions(ops)
+  bulbs = Hash.new(false)
+  ops.each do |op|
+    (op[:xmin]..op[:xmax]).each do |x|
+      (op[:ymin]..op[:ymax]).each do |y|
+        case op[:op]
+        when 'turn on'
+          bulbs[[x, y]] = true
+        when 'toggle'
+          bulbs[[x, y]] = !bulbs[[x, y]]
+        when 'turn off'
+          bulbs[[x, y]] = false
+        end
+      end
+    end
+  end
+  bulbs
+end
+
+def count_bulbs(bulbs)
+  bulbs.values.select { |v| v }.count
+end
+
 raw_lines = slurp($args[:file])
 puts raw_lines.to_s
+ops = parse_inputs(raw_lines)
+bulbs = execute_instructions(ops)
+puts bulbs
+puts count_bulbs(bulbs)
